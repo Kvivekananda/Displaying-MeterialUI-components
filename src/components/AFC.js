@@ -28,7 +28,7 @@ export default function DisableRowSelection() {
 
 
   return (
-    <div style={{padding:'20px'}}>
+    <div style={{padding:'25px'}}>
     <Box sx={{ p: 2, bgcolor: '#f5f5f5', mb: 2, borderRadius: 1 }}>
   <Typography variant="h4" fontWeight="bold">DATA GRID </Typography>
   <Typography variant="body2" color="text.secondary">
