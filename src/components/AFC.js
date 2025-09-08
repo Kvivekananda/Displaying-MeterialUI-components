@@ -61,7 +61,7 @@ export default function DisableRowSelection() {
        <DataGrid
           {...data}
           loading={loading}
-         
+          showToolbar
            initialState={{
                         pagination: {
                             paginationModel: { pageSize: 25, page: 0 },
