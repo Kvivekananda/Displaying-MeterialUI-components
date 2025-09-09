@@ -71,19 +71,7 @@ export default function DisableRowSelection() {
            checkboxSelection
         />
   </div>
-    <Alert severity="info" sx={{ width: '100%', mt: 1 }}>
-        <AlertTitle>Copied data:</AlertTitle>
-        <code
-          style={{
-            display: 'block',
-            maxHeight: 200,
-            overflow: 'auto',
-            whiteSpace: 'pre-line',
-          }}
-        >
-          {copiedData}
-        </code>
-      </Alert>
+    
     </div>
   );
 }
