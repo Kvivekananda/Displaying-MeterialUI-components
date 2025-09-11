@@ -34,7 +34,7 @@ export default function DisableRowSelection() {
   <Typography variant="body2" color="text.secondary">
      Below You can View last Fields of Data Grid Component Pagination and Selection
   </Typography>
-                </Box>
+  </Box>
     <div style={{ height: 400, width: '100%' }}>
       <DataGrid
         {...data}
@@ -63,12 +63,15 @@ export default function DisableRowSelection() {
           loading={loading}
           showToolbar
            initialState={{
+...data.initialState,
+      scroll: { top: 500, left: 1000 },
                         pagination: {
                             paginationModel: { pageSize: 25, page: 0 },
                         },
                     }}
                     pageSizeOptions={[25,50,75,100]}
            checkboxSelection
+
         />
   </div>
     

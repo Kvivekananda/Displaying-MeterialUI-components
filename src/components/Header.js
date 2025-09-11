@@ -22,6 +22,10 @@ function Header() {
         return 5;
         case "/AFC":
         return 6;
+         case "/DTP":
+        return 7;
+         case "/BarChart":
+        return 8;
       default:
         return 0;
     }
@@ -61,6 +65,8 @@ function Header() {
           <Tab label="DataGrid1" sx={{ color: "white", fontWeight:'bold',fontSize:'18px' }} component={Link} to="/DataGrid1" />
           <Tab label="DataGrid2" sx={{ color: "white", fontWeight:'bold',fontSize:'18px' }} component={Link} to="/DataGrid2" />
           <Tab label="AFC" sx={{ color: "white", fontWeight:'bold',fontSize:'18px' }} component={Link} to="/AFC" />
+           <Tab label="DTP" sx={{ color: "white", fontWeight:'bold',fontSize:'18px' }} component={Link} to="/DTP" />
+         <Tab label="BarChart" sx={{ color: "white", fontWeight:'bold',fontSize:'18px' }} component={Link} to="/BarChart" />
         </Tabs>
       </Box>
     </header>

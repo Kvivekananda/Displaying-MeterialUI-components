@@ -166,7 +166,7 @@ const rows = [
     id: 3,
      firstName:'Clifford',
     lastName: 'Raj',
-    avatar: '#4c4fafff',
+    avatar: '#1d2073ff',
     email: 'Raj@example.com',
     rating: 5,
     country: { code: 'DE', label: 'Germany' },
@@ -312,12 +312,6 @@ const columnGroupingModel = [
   }}
   pageSizeOptions={[5, 10, 25]} />
       </div>
-
-
-
-
-    
-
     </div>
   );
 }

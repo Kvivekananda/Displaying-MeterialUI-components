@@ -9,6 +9,9 @@ import NavigationLayout from "./components/NavigationLayout";
 import DataGrid1 from "./components/DataGrid1";
 import DataGrid2 from "./components/DataGrid2";
 import AFC from "./components/AFC";
+import DTP from "./components/DTP";
+import BarChart from "./components/BarChart";
+
 function App() {
   return (
     <div>
@@ -23,6 +26,8 @@ function App() {
             <Route path="/DataGrid1" element={<DataGrid1 />} />
             <Route path="/DataGrid2" element={<DataGrid2 />} />
             <Route path="/AFC" element={<AFC />} />
+            <Route path="/DTP" element={<DTP />} />
+             <Route path="/BarChart" element={<BarChart />} />
           </Routes>
         </div>
         <Footer />

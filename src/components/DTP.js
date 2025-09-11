@@ -74,7 +74,7 @@ export default function DTP() {
             {dateTime ? dateTime.format("YYYY-MM-DD hh:mm A") : "Not selected"}
           </Typography>
         </Paper>
-        <Divider sx={{ my: 5 }} />
+        
         <Typography variant="h5" fontWeight="bold" gutterBottom>
           Schedule an Appointment
         </Typography>
