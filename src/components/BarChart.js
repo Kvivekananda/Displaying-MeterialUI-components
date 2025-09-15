@@ -1,81 +1,67 @@
 import * as React from "react";
+import { Box, Typography, Card, CardContent, Grid } from "@mui/material";
 import { BarChart } from "@mui/x-charts/BarChart";
-import { Typography, Box } from "@mui/material";
-import Stack from "@mui/material/Stack";
+import Stack from '@mui/material/Stack';
 
-const dataset = [
-  { month: "Jan", london: 18, paris: 20, newYork: 25, seoul: 21 },
-  { month: "Feb", london: 20, paris: 22, newYork: 27, seoul: 23 },
-  { month: "Mar", london: 25, paris: 26, newYork: 30, seoul: 28 },
-  { month: "Apr", london: 28, paris: 30, newYork: 35, seoul: 32 },
-  { month: "May", london: 30, paris: 32, newYork: 38, seoul: 35 },
-  { month: "Jun", london: 32, paris: 34, newYork: 40, seoul: 37 },
-  { month: "Jul", london: 33, paris: 35, newYork: 42, seoul: 39 },
-  { month: "Aug", london: 31, paris: 33, newYork: 41, seoul: 36 },
-  { month: "Sep", london: 28, paris: 30, newYork: 37, seoul: 33 },
-  { month: "Oct", london: 24, paris: 26, newYork: 33, seoul: 28 },
-  { month: "Nov", london: 20, paris: 22, newYork: 28, seoul: 24 },
-  { month: "Dec", london: 18, paris: 20, newYork: 25, seoul: 21 },
+
+const employeeTasks = [
+  { id: 1, TeamMembers: "Vivekananda", DraftTask: 5, Ready_To_Deploy: 8, Complete: 5, Blocked: 4 },
+  { id: 2, TeamMembers: "Pavan", DraftTask: 6, Ready_To_Deploy: 8, Complete: 5, Blocked: 1 },
+  { id: 3, TeamMembers: "Srini", DraftTask: 8, Ready_To_Deploy: 8, Complete: 1, Blocked: 3 },
+  { id: 4, TeamMembers: "Praneeth", DraftTask: 4, Ready_To_Deploy: 8, Complete: 2, Blocked: 2 },
+  { id: 5, TeamMembers: "Ravi", DraftTask: 7, Ready_To_Deploy: 8, Complete: 5, Blocked: 3 },
+  { id: 6, TeamMembers: "Nikhil", DraftTask: 5, Ready_To_Deploy: 5, Complete: 4, Blocked: 1 },
+  { id: 7, TeamMembers: "Bala", DraftTask: 6, Ready_To_Deploy: 4, Complete: 5, Blocked: 3 },
 ];
 
-const valueFormatter = (value) => `${value} mm`;
+const totals = employeeTasks.reduce(
+  (acc, curr) => {
+    acc.DraftTask += curr.DraftTask;
+    acc.Ready_To_Deploy += curr.Ready_To_Deploy;
+    acc.Complete += curr.Complete;
+    acc.Blocked += curr.Blocked;
+    return acc;
+  },
+  { DraftTask: 0, Ready_To_Deploy: 0, Complete: 0, Blocked:0 }
+);
 
-const chartSetting = {
-  yAxis: [
-    {
-      label: "rainfall (mm)",
-      width: 60,
-    },
-  ],
-  height: 300,
-};
 
-const ageGroups = [
-  "100+ yrs",
-  "95-99 yrs",
-  "90-94 yrs",
-  "85-89 yrs",
-  "80-84 yrs",
-  "75-79 yrs",
-  "70-74 yrs",
-  "65-69 yrs",
-  "60-64 yrs",
-  "55-59 yrs",
-  "50-54 yrs",
-  "45-49 yrs",
-  "40-44 yrs",
-  "35-39 yrs",
-  "30-34 yrs",
-  "25-29 yrs",
-  "20-24 yrs",
-  "15-19 yrs",
-  "10-14 yrs",
-  "5-9 yrs",
-  "0-4 yrs",
-];
 
-const male = [
-  1139, 8291, 50323, 201240, 476263, 696606, 1012668, 1478069, 2042614, 2068112,
-  2258061, 2061862, 2067075, 1808706, 1796779, 1933726, 1620461, 1183580,
-  1189663, 1097221, 766227,
+
+
+
+
+  const dataset = [
+    { department: "Engineering" },
+    { department: "HR" },
+    { department: "Marketing" },
+    { department: "Sales" },
+    { department: "Finance"},
+    { department: "Cloud"},
+  ];
+  const male = [
+ 60,50,44,98,65,24
 ];
 
 const female = [
-  5770, 36739, 168603, 445118, 762492, 899933, 1152098, 1585781, 2105499,
-  2045845, 2231491, 2000130, 1967944, 1673805, 1593655, 1695058, 1484776,
-  1104293, 1122176, 1044863, 727814,
+ 45,54,87,65,50,19
 ];
 
-const numberFormatter = Intl.NumberFormat("en-US", {
+const numberFormatter = Intl.NumberFormat('en-US', {
   useGrouping: true,
 });
-const numberWithSuffixFormatter = new Intl.NumberFormat("en-US", {
-  notation: "compact",
+const numberWithSuffixFormatter = new Intl.NumberFormat('en-US', {
+  notation: 'compact',
 });
-const valueFormatter1 = (population) =>
-  population ? `${numberFormatter.format(Math.abs(population))}` : "";
+const valueFormatter = (population) =>
+  population ? `${numberFormatter.format(Math.abs(population))}` : '';
 
-export default function BarsDataset() {
+
+
+
+
+
+export default function EmployeeDashboard() {
   return (
     <div>
       <Box
@@ -95,73 +81,136 @@ export default function BarsDataset() {
           baseline.
         </Typography>
       </Box>
-      <div style={{ padding: "30px" }}>
-        <Typography variant="h5" fontWeight="bold" gutterBottom>
-          Weather Data Chart
-        </Typography>
+    <Box sx={{ p: 4,  minHeight: "100vh" }}>
 
-        <BarChart
-          dataset={dataset}
-          xAxis={[{ dataKey: "month" }]}
-          series={[
-            { dataKey: "london", label: "London", valueFormatter },
-            { dataKey: "paris", label: "Paris", valueFormatter },
-            { dataKey: "newYork", label: "New York", valueFormatter },
-            { dataKey: "seoul", label: "Seoul", valueFormatter },
-          ]}
-          {...chartSetting}
-        />
-      </div>
+      <Typography variant="h5" fontWeight="bold" gutterBottom>
+        📊 Employee Task Dashboard
+      </Typography>
+      <Typography variant="body1" color="text.secondary" gutterBottom>
+        Overview of task distribution across team members
+      </Typography>
 
-      <Stack width="100%" sx={{ mx: [0, 4] }}>
-        <Typography variant="h6" component="span" textAlign="center">
-          South Korea Population Pyramid - 2022
-        </Typography>
-        <BarChart
-          height={500}
-          layout="horizontal"
-          margin={{ right: 0, left: 0 }}
-          series={[
-            {
-              data: male.map((population) => -population),
-              label: "Male",
-              type: "bar",
-              valueFormatter1,
-              stack: "stack",
+      <Grid container spacing={2} sx={{ mb: 4 }}>
+        <Grid item xs={12} md={3}>
+          <Card sx={{ bgcolor: "#e3f2fd" }}>
+            <CardContent>
+              <Typography variant="h6">Draft Tasks</Typography>
+              <Typography variant="h4" fontWeight="bold">{totals.DraftTask}</Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12} md={3}>
+          <Card sx={{ bgcolor: "#fff3e0" }}>
+            <CardContent>
+              <Typography variant="h6">Ready to Deploy</Typography>
+              <Typography variant="h4" fontWeight="bold">{totals.Ready_To_Deploy}</Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12} md={3}>
+          <Card sx={{ bgcolor: "#adeeb2ff" }}>
+            <CardContent>
+              <Typography variant="h6">Completed</Typography>
+              <Typography variant="h4" fontWeight="bold">{totals.Complete}</Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12} md={3}>
+          <Card sx={{ bgcolor: "#eda3aeff" }}>
+            <CardContent>
+              <Typography variant="h6">Blocked</Typography>
+              <Typography variant="h4" fontWeight="bold">{totals.Blocked}</Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+
+
+      <Card>
+        <CardContent>
+          <Typography variant="h6" gutterBottom>
+            Team Member Task Distribution
+          </Typography>
+          <BarChart
+            dataset={employeeTasks}
+            xAxis={[{ dataKey: "TeamMembers" }]}
+            series={[
+              { dataKey: "DraftTask", label: "Draft" },
+              { dataKey: "Ready_To_Deploy", label: "Ready To Deploy" },
+              { dataKey: "Complete", label: "Completed" },
+              { dataKey: "Blocked", label: "Blocked" },
+            ]}
+            height={400}
+          />
+        </CardContent>
+      </Card>
+    
+
+
+<Box sx={{ p: 3,my:12 }}>
+  <Box sx={{mb:5}}>
+      <Typography variant="h5" fontWeight="bold" gutterBottom>
+        Employee Distribution by Department (Male vs Female)
+      </Typography>
+       <Typography variant="body1" color="text.secondary" gutterBottom>
+        Below shows Pyramid BarChart Of Male and Female of Each Department</Typography>
+        </Box>
+ <Card>
+   <CardContent>
+    
+      <BarChart
+        dataset={dataset}
+        yAxis={[{ scaleType: "band", dataKey: "department" }]}
+        series={[
+          {  data: male.map((population) => -population),
+            label: 'Male',
+            type: 'bar',
+            valueFormatter,},
+          {  data: female,
+            label: 'Female',
+            type: 'bar',
+            valueFormatter,},
+        ]}
+        layout="horizontal"
+         xAxis={[
+          {
+            valueFormatter: (population) =>
+              numberWithSuffixFormatter.format(Math.abs(population)),
+            disableLine: true,
+            disableTicks: true,
+            domainLimit(min, max) {
+              const extremum = Math.max(-min, max);
+              const roundedExtremum = Math.ceil(extremum / 10_0) * 10_0;
+              return { min: -roundedExtremum, max: roundedExtremum };
             },
-            {
-              data: female,
-              label: "Female",
-              type: "bar",
-              valueFormatter1,
-              stack: "stack",
-            },
-          ]}
-          yAxis={[
-            {
-              data: ageGroups,
-              width: 60,
-              disableLine: true,
-              disableTicks: true,
-            },
-          ]}
-          xAxis={[
-            {
-              valueFormatter1: (population) =>
-                numberWithSuffixFormatter.format(Math.abs(population)),
-              disableLine: true,
-              disableTicks: true,
-              domainLimit(min, max) {
-                const extremum = Math.max(-min, max);
-                const roundedExtremum = Math.ceil(extremum / 100_000) * 100_000;
-                return { min: -roundedExtremum, max: roundedExtremum };
-              },
-            },
-          ]}
-          grid={{ vertical: true }}
-        />
-        <Typography variant="caption">Source: KOSIS</Typography>
-      </Stack>
+            label: "Number of Employees"
+          },
+        ]}
+        grid={{ vertical: true }}
+       
+        height={400}
+        margin={{ left: 0, right: 0 }}
+      />
+      </CardContent>
+      </Card>
+    </Box>
+
+
+    </Box>
+
+
+   
     </div>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
