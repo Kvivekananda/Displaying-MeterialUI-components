@@ -232,6 +232,15 @@ export default function FeedbackPage() {
         </div>
       </Backdrop>
 </Stack>
+
+ <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        open={openn}
+        onClose={handleClosee}
+        message="Here Our Team Task Info"
+        autoHideDuration={3000} // optional: auto hide after 3 seconds
+      />
+
       {/* Example card */}
 
 <Box style={{ marginTop: '60px' ,marginBottom:'30px'}}>  <Typography variant="h5" gutterBottom >Other's Team Members Feedback</Typography>     <Divider />
@@ -289,14 +298,6 @@ export default function FeedbackPage() {
 
 
 
-
- <Snackbar
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        open={openn}
-        onClose={handleClosee}
-        message="Here Our Team Task Info"
-        autoHideDuration={3000} // optional: auto hide after 3 seconds
-      />
 
 
 

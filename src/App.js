@@ -11,13 +11,16 @@ import DataGrid2 from "./components/DataGrid2";
 import AFC from "./components/AFC";
 import DTP from "./components/DTP";
 import BarChart from "./components/BarChart";
+import LinesChart from "./components/LinesChart";
+import PieChart1 from "./components/PieChart1";
+import Scatter from "./components/Scatter";
 
 function App() {
   return (
     <div>
       <Router>
         <Header />
-        <div >
+        <div>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
@@ -27,7 +30,10 @@ function App() {
             <Route path="/DataGrid2" element={<DataGrid2 />} />
             <Route path="/AFC" element={<AFC />} />
             <Route path="/DTP" element={<DTP />} />
-             <Route path="/BarChart" element={<BarChart />} />
+            <Route path="/BarChart" element={<BarChart />} />
+            <Route path="/LinesChart" element={<LinesChart />} />
+            <Route path="/PieChart1" element={<PieChart1 />} />
+            <Route path="/Scatter" element={<Scatter />} />
           </Routes>
         </div>
         <Footer />

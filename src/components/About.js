@@ -87,7 +87,7 @@ function About() {
   ];
 
   const Status = [
-    { name: "Vivekananda", des: 'Current Task status', task: 1, status: " In Progress" },
+    { name: "Vivekananda", des: 'Current Task status', task: 1, status: "In Progress" },
     { name: "Pavan", des: 'Current Task status', task: 3, status: "Pending" },
     { name: "Srini", des: 'Current Task status', task: 1, status: "Completed" },
     { name: "Praneeth", des: 'Current Task status', task: 3, status: "In Progress" },

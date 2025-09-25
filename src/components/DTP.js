@@ -3,163 +3,124 @@ import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-import { Box, Typography, Paper, Stack, Alert, Divider } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Paper,
+  Divider,
+  Stack,
+  Alert,
+} from "@mui/material";
+import { DataGrid } from "@mui/x-data-grid";
 
-export default function DTP() {
-  const [date, setDate] = React.useState(dayjs());
-  const [time, setTime] = React.useState(dayjs());
-  const [dateTime, setDateTime] = React.useState(dayjs());
+const columns = [
+  { field: "TeamMembers", headerName: "Team Members", width: 180 },
+  { field: "DraftTask", headerName: "Draft Task", type: "number", width: 150 },
+  { field: "Ready_To_Deploy", headerName: "Ready To Deploy", type: "number", width: 180 },
+  { field: "Complete", headerName: "Complete", type: "number", width: 150 },
+  { field: "Blocked", headerName: "Blocked", type: "number", width: 150 },
+];
+
+
+const rowsByDate = {
+  "2025-09-22": [
+    { id: 1, TeamMembers: "Vivekananda", DraftTask: 9, Ready_To_Deploy: 8, Complete: 1, Blocked: 4 },
+    { id: 2, TeamMembers: "Pavan", DraftTask: 6, Ready_To_Deploy: 8, Complete: 5, Blocked: 1 },
+    { id: 3, TeamMembers: "Srini", DraftTask: 8, Ready_To_Deploy: 8, Complete: 1, Blocked: 3 },
+    { id: 4, TeamMembers: "Praneeth", DraftTask: 4, Ready_To_Deploy: 8, Complete: 2, Blocked: 2 },
+    { id: 5, TeamMembers: "Ravi", DraftTask: 7, Ready_To_Deploy: 8, Complete: 5, Blocked: 3 },
+    { id: 6, TeamMembers: "Nikhil", DraftTask: 5, Ready_To_Deploy: 5, Complete: 4, Blocked: 1 },
+    { id: 7, TeamMembers: "Bala", DraftTask: 6, Ready_To_Deploy: 4, Complete: 5, Blocked: 3 },
+  ],
+  "2025-09-23": [
+    { id: 1, TeamMembers: "Vivekananda", DraftTask: 8, Ready_To_Deploy: 7, Complete: 3, Blocked: 2 },
+    { id: 2, TeamMembers: "Pavan", DraftTask: 7, Ready_To_Deploy: 6, Complete: 4, Blocked: 2 },
+    { id: 3, TeamMembers: "Srini", DraftTask: 5, Ready_To_Deploy: 7, Complete: 3, Blocked: 1 },
+    { id: 4, TeamMembers: "Praneeth", DraftTask: 6, Ready_To_Deploy: 6, Complete: 3, Blocked: 2 },
+  ],
+  "2025-09-24": [
+    { id: 1, TeamMembers: "Vivekananda", DraftTask: 10, Ready_To_Deploy: 6, Complete: 2, Blocked: 3 },
+    { id: 2, TeamMembers: "Pavan", DraftTask: 9, Ready_To_Deploy: 5, Complete: 4, Blocked: 2 },
+    { id: 3, TeamMembers: "Srini", DraftTask: 4, Ready_To_Deploy: 7, Complete: 5, Blocked: 1 },
+    { id: 4, TeamMembers: "Praneeth", DraftTask: 5, Ready_To_Deploy: 6, Complete: 4, Blocked: 2 },
+  ],
+};
+
+export default function Dashboard() {
+  const [date, setDate] = React.useState(null);
   const [cleared, setCleared] = React.useState(false);
-  const [cleared2, setCleared2] = React.useState(false);
-  const [cleared3, setCleared3] = React.useState(false);
+
+
+  const allowedDates = ["2025-09-22", "2025-09-23", "2025-09-24"];
+  const shouldDisableDate = (day) => {
+    const formatted = day.format("YYYY-MM-DD");
+    return !allowedDates.includes(formatted);
+  };
 
   React.useEffect(() => {
     if (cleared) {
       const timeout = setTimeout(() => setCleared(false), 1500);
       return () => clearTimeout(timeout);
     }
-   
   }, [cleared]);
-  React.useEffect(() => {
-    if (cleared2) {
-      const timeout = setTimeout(() => setCleared2(false), 1500);
-      return () => clearTimeout(timeout);
-    }
-   
-  }, [cleared2]);
-   React.useEffect(() => {
-    if (cleared3) {
-      const timeout = setTimeout(() => setCleared3(false), 1500);
-      return () => clearTimeout(timeout);
-    }
-   
-  }, [cleared3]);
-  
+
+  const selectedRows = date ? rowsByDate[date.format("YYYY-MM-DD")] : null;
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Box
-        sx={{
-          p: 2,
-          bgcolor: "#f5f5f5",
-          mb: 2,
-          borderRadius: 1,
-          padding: "40px",
-        }}
-      >
-        <Typography variant="h4" fontWeight="bold">
-          DATE AND TIME PICKERS
+      <Box sx={{ p: 4, bgcolor: "#f5f5f5", minHeight: "100vh" }}>
+        <Typography variant="h4" fontWeight="bold" gutterBottom>
+          📊 Project Dashboard
         </Typography>
-        <Typography variant="body1" color="text.secondary">
-          A collection of React UI components for selecting dates, times, and
-          both date and time.
+        <Typography variant="body1" color="text.secondary" mb={4}>
+          View team progress by selecting a project date.
         </Typography>
-      </Box>
-      
-      <Box sx={{ p: 4, minHeight: "100vh" }}>
-        {/* Summary (real-world use case) */}
-        <Paper elevation={1} sx={{ p: 3,marginBottom:'30px', borderRadius: 2, bgcolor: "#f5f5f5" }}>
-          <Typography variant="h6" fontWeight="bold" gutterBottom>
-            Summary
+
+        <Paper elevation={3} sx={{ p: 3, borderRadius: 2, mb: 4 }}>
+          <Typography variant="h6" gutterBottom>
+            Select a Date
           </Typography>
-          <Typography>
-            📅 Date: {date ? date.format("YYYY-MM-DD") : "Not selected"}
-          </Typography>
-          <Typography>
-            ⏰ Time: {time ? time.format("hh:mm A") : "Not selected"}
-          </Typography>
-          <Typography>
-            📋 Full Schedule:{" "}
-            {dateTime ? dateTime.format("YYYY-MM-DD hh:mm A") : "Not selected"}
-          </Typography>
+          <DesktopDatePicker
+            label="Project Date"
+            value={date}
+            onChange={(newValue) => setDate(newValue)}
+            shouldDisableDate={shouldDisableDate}
+            slotProps={{
+              textField: {
+                fullWidth: true,
+                helperText: "Only Sep 22, 23, 24 2025 are available",
+              },
+              field: { clearable: true, onClear: () => setCleared(true) },
+            }}
+          />
         </Paper>
-        
-        <Typography variant="h5" fontWeight="bold" gutterBottom>
-          Schedule an Appointment
-        </Typography>
-        <Typography variant="body2" color="text.secondary" mb={4}>
-          Choose a date and time for your booking. These fields can be reused
-          for meetings, reservations, or event scheduling.
-        </Typography>
 
-        <Stack spacing={4}>
-          {/* Date Picker */}
-          <Paper elevation={2} sx={{ p: 3, borderRadius: 2 }}>
+        {cleared && (
+          <Alert severity="success" sx={{ mb: 3, width: "fit-content" }}>
+            Date cleared!
+          </Alert>
+        )}
+
+        {selectedRows ? (
+          <Paper elevation={3} sx={{ p: 3, borderRadius: 2 }}>
             <Typography variant="h6" gutterBottom>
-              Select a Date
+              📅 Schedule for {date.format("YYYY-MM-DD")}
             </Typography>
-            <DesktopDatePicker
-              label="Appointment Date"
-              value={date}
-              onChange={(newValue) => setDate(newValue)}
-              slotProps={{
-                textField: {
-                  fullWidth: true,
-                  helperText: "Pick a suitable date",
-                },
-                field: { clearable: true, onClear: () => setCleared(true) },
-              }}
-            />
+            <Divider sx={{ mb: 2 }} />
+            <div style={{ height: 400, width: "100%" }}>
+              <DataGrid
+                rows={selectedRows}
+                columns={columns}
+                pageSizeOptions={[5, 10, 25]}
+                initialState={{
+                  pagination: { paginationModel: { pageSize: 5, page: 0 } },
+                }}
+              />
+            </div>
           </Paper>
-
-          {cleared && (
-            <Alert severity="success" sx={{ mt: 3, width: "fit-content" }}>
-              Date Field cleared!
-            </Alert>
-          )}
-
-          {/* Time Picker */}
-          <Paper elevation={2} sx={{ p: 3, borderRadius: 2 }}>
-            <Typography variant="h6" gutterBottom>
-              Select a Time
-            </Typography>
-            <TimePicker
-              label="Appointment Time"
-              value={time}
-              onChange={(newValue) => setTime(newValue)}
-              slotProps={{
-                textField: {
-                  fullWidth: true,
-                  helperText: "Choose an available slot",
-                },
-                field: { clearable: true, onClear: () => setCleared2(true) },
-              }}
-            />
-          </Paper>
-          {cleared2 && (
-            <Alert severity="success" sx={{ mt: 3, width: "fit-content" }}>
-              Time Field cleared!
-            </Alert>
-          )}
-
-          {/* Date & Time Picker */}
-          <Paper elevation={2} sx={{ p: 3, borderRadius: 2 }}>
-            <Typography variant="h6" gutterBottom>
-              Select Date & Time
-            </Typography>
-            <DateTimePicker
-              label="Full Schedule"
-              value={dateTime}
-              onChange={(newValue) => setDateTime(newValue)}
-              slotProps={{
-                textField: {
-                  fullWidth: true,
-                  helperText: "Combine date & time",
-                },field: { clearable: true, onClear: () => setCleared3(true) },
-              }}
-            />
-          </Paper>
-           {cleared3 && (
-            <Alert severity="success" sx={{ mt: 3, width: "fit-content" }}>
-             Date and Time Fields cleared!
-            </Alert>
-          )}
-        </Stack>
-
-        
-
-        
+        ) : (
+          <Alert severity="info">Please select a date to view data.</Alert>
+        )}
       </Box>
     </LocalizationProvider>
   );
