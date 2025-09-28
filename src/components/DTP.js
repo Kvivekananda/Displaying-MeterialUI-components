@@ -1,4 +1,5 @@
 import * as React from "react";
+import Papa from "papaparse";
 import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -8,7 +9,6 @@ import {
   Typography,
   Paper,
   Divider,
-  Stack,
   Alert,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
@@ -21,41 +21,64 @@ const columns = [
   { field: "Blocked", headerName: "Blocked", type: "number", width: 150 },
 ];
 
-
-const rowsByDate = {
-  "2025-09-22": [
-    { id: 1, TeamMembers: "Vivekananda", DraftTask: 9, Ready_To_Deploy: 8, Complete: 1, Blocked: 4 },
-    { id: 2, TeamMembers: "Pavan", DraftTask: 6, Ready_To_Deploy: 8, Complete: 5, Blocked: 1 },
-    { id: 3, TeamMembers: "Srini", DraftTask: 8, Ready_To_Deploy: 8, Complete: 1, Blocked: 3 },
-    { id: 4, TeamMembers: "Praneeth", DraftTask: 4, Ready_To_Deploy: 8, Complete: 2, Blocked: 2 },
-    { id: 5, TeamMembers: "Ravi", DraftTask: 7, Ready_To_Deploy: 8, Complete: 5, Blocked: 3 },
-    { id: 6, TeamMembers: "Nikhil", DraftTask: 5, Ready_To_Deploy: 5, Complete: 4, Blocked: 1 },
-    { id: 7, TeamMembers: "Bala", DraftTask: 6, Ready_To_Deploy: 4, Complete: 5, Blocked: 3 },
-  ],
-  "2025-09-23": [
-    { id: 1, TeamMembers: "Vivekananda", DraftTask: 8, Ready_To_Deploy: 7, Complete: 3, Blocked: 2 },
-    { id: 2, TeamMembers: "Pavan", DraftTask: 7, Ready_To_Deploy: 6, Complete: 4, Blocked: 2 },
-    { id: 3, TeamMembers: "Srini", DraftTask: 5, Ready_To_Deploy: 7, Complete: 3, Blocked: 1 },
-    { id: 4, TeamMembers: "Praneeth", DraftTask: 6, Ready_To_Deploy: 6, Complete: 3, Blocked: 2 },
-  ],
-  "2025-09-24": [
-    { id: 1, TeamMembers: "Vivekananda", DraftTask: 10, Ready_To_Deploy: 6, Complete: 2, Blocked: 3 },
-    { id: 2, TeamMembers: "Pavan", DraftTask: 9, Ready_To_Deploy: 5, Complete: 4, Blocked: 2 },
-    { id: 3, TeamMembers: "Srini", DraftTask: 4, Ready_To_Deploy: 7, Complete: 5, Blocked: 1 },
-    { id: 4, TeamMembers: "Praneeth", DraftTask: 5, Ready_To_Deploy: 6, Complete: 4, Blocked: 2 },
-  ],
-};
-
 export default function Dashboard() {
   const [date, setDate] = React.useState(null);
   const [cleared, setCleared] = React.useState(false);
+  const [rowsByDate, setRowsByDate] = React.useState({});
+  const [allowedDates, setAllowedDates] = React.useState([]);
+  const [error, setError] = React.useState(null);
 
+  // Load available files from index.json
+  React.useEffect(() => {
+    fetch("/task/index.json")
+      .then((res) => res.json())
+      .then((files) => {
+        if (!files || files.length === 0) {
+          setError("No task files found.");
+          return;
+        }
 
-  const allowedDates = ["2025-09-22", "2025-09-23", "2025-09-24"];
-  const shouldDisableDate = (day) => {
-    const formatted = day.format("YYYY-MM-DD");
-    return !allowedDates.includes(formatted);
-  };
+        // Convert filenames into YYYY-MM-DD format
+        const dates = files.map((file) => {
+          const [day, month, year] = file.replace(".csv", "").split("-");
+          return `${year}-${month}-${day}`; // 2025-09-22
+        });
+
+        setAllowedDates(dates);
+
+        // Preload CSV data for each file
+        files.forEach((file, idx) => {
+          const [day, month, year] = file.replace(".csv", "").split("-");
+          const dateKey = `${year}-${month}-${day}`;
+
+          Papa.parse(`/task/${file}`, {
+            download: true,
+            header: true,
+            skipEmptyLines: true,
+            complete: (result) => {
+              if (!result.data || result.data.length === 0) return;
+
+              const rows = result.data.map((row, i) => ({
+                id: i + 1,
+                TeamMembers: row.TeamMembers,
+                DraftTask: Number(row.DraftTask),
+                Ready_To_Deploy: Number(row.Ready_To_Deploy),
+                Complete: Number(row.Complete),
+                Blocked: Number(row.Blocked),
+              }));
+
+              setRowsByDate((prev) => ({ ...prev, [dateKey]: rows }));
+            },
+            error: (err) => {
+              setError("Failed to load " + file + ": " + err.message);
+            },
+          });
+        });
+      })
+      .catch((err) => {
+        setError("Failed to load file list: " + err.message);
+      });
+  }, []);
 
   React.useEffect(() => {
     if (cleared) {
@@ -63,6 +86,11 @@ export default function Dashboard() {
       return () => clearTimeout(timeout);
     }
   }, [cleared]);
+
+  const shouldDisableDate = (day) => {
+    const formatted = day.format("YYYY-MM-DD");
+    return !allowedDates.includes(formatted);
+  };
 
   const selectedRows = date ? rowsByDate[date.format("YYYY-MM-DD")] : null;
 
@@ -88,7 +116,10 @@ export default function Dashboard() {
             slotProps={{
               textField: {
                 fullWidth: true,
-                helperText: "Only Sep 22, 23, 24 2025 are available",
+                helperText:
+                  allowedDates.length > 0
+                    ? `Available dates: ${allowedDates.join(", ")}`
+                    : "No available dates yet",
               },
               field: { clearable: true, onClear: () => setCleared(true) },
             }}
@@ -98,6 +129,12 @@ export default function Dashboard() {
         {cleared && (
           <Alert severity="success" sx={{ mb: 3, width: "fit-content" }}>
             Date cleared!
+          </Alert>
+        )}
+
+        {error && (
+          <Alert severity="error" sx={{ mb: 3, width: "fit-content" }}>
+            {error}
           </Alert>
         )}
 
@@ -119,7 +156,9 @@ export default function Dashboard() {
             </div>
           </Paper>
         ) : (
-          <Alert severity="info">Please select a date to view data.</Alert>
+          !error && (
+            <Alert severity="info">Please select a date to view data.</Alert>
+          )
         )}
       </Box>
     </LocalizationProvider>

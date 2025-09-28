@@ -97,10 +97,25 @@ function About() {
 
   return (
 
-    <div >
+   <div>
+  
       <div style={{ padding: "20px", backgroundColor: "rgba(180, 176, 176, 0.1)" }}>
-        <h1>About Us Page</h1>
-        <p>Welcome to our About page! Here's Our team and some analytics. </p>
+        <Box
+        sx={{
+          p: 2,
+          bgcolor: "#f5f5f5",
+          mb: 2,
+          borderRadius: 1,
+          
+        }}
+      >
+        <Typography variant="h4" fontWeight="bold">
+          DATA DISPLAY
+        </Typography>
+        <Typography variant="body1" color="text.secondary">
+         Welcome to our About page! Here's Our team and some analytics.
+        </Typography>
+      </Box>
 
         <div style={{
           border: "1px solid #ddd",

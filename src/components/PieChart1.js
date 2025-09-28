@@ -2,10 +2,7 @@ import * as React from "react";
 import { PieChart } from "@mui/x-charts/PieChart";
 import { Box, Typography, Grid, Divider, Paper } from "@mui/material";
 
-
 function EmployeeWorkloadPieChart() {
-
-
   const employeeTasks = [
     { id: 0, value: 120, label: "Draft", color: "#0059fedc" },
     { id: 1, value: 55, label: "Work In Progress", color: "#FFBB28" },
@@ -16,7 +13,6 @@ function EmployeeWorkloadPieChart() {
 
   return (
     <Box sx={{ p: 3, bgcolor: "#f4f6f8", minHeight: "100vh" }}>
-   
       <Box sx={{ mb: 4 }}>
         <Typography variant="h4" fontWeight="bold" gutterBottom>
           📊 Employee Workload Dashboard
@@ -29,22 +25,14 @@ function EmployeeWorkloadPieChart() {
 
       <Divider sx={{ mb: 4 }} />
 
-
       <Grid container spacing={4}>
         {/* Pie Chart */}
         <Grid item xs={12} md={6}>
-          <Paper
-            elevation={3}
-            sx={{ p: 3, borderRadius: 3, height: "100%" }}
-          >
+          <Paper elevation={3} sx={{ p: 3, borderRadius: 3, height: "100%" }}>
             <Typography variant="h6" fontWeight="bold" gutterBottom>
               🥧 Pie Chart - Workload Distribution
             </Typography>
-            <Typography
-              variant="body2"
-              color="text.secondary"
-              gutterBottom
-            >
+            <Typography variant="body2" color="text.secondary" gutterBottom>
               Proportion of tasks across statuses.
             </Typography>
 
@@ -52,6 +40,7 @@ function EmployeeWorkloadPieChart() {
               series={[
                 {
                   data: employeeTasks,
+                  arcLabel: "value",
                   highlightScope: { fade: "global", highlight: "item" },
                 },
               ]}
@@ -61,20 +50,12 @@ function EmployeeWorkloadPieChart() {
           </Paper>
         </Grid>
 
-
         <Grid item xs={12} md={6}>
-          <Paper
-            elevation={3}
-            sx={{ p: 3, borderRadius: 3, height: "100%" }}
-          >
+          <Paper elevation={3} sx={{ p: 3, borderRadius: 3, height: "100%" }}>
             <Typography variant="h6" fontWeight="bold" gutterBottom>
               🍩 Donut Chart - Workload Distribution
             </Typography>
-            <Typography
-              variant="body2"
-              color="text.secondary"
-              gutterBottom
-            >
+            <Typography variant="body2" color="text.secondary" gutterBottom>
               Same data shown in a donut format.
             </Typography>
 
@@ -95,8 +76,7 @@ function EmployeeWorkloadPieChart() {
         </Grid>
       </Grid>
 
-
-      <Box sx={{ mt: 9}}>
+      <Box sx={{ mt: 9 }}>
         <Typography variant="h6" fontWeight="bold" gutterBottom>
           📌 Quick Stats
         </Typography>

@@ -109,16 +109,25 @@ export default function NavigationLayout() {
 
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 4, mb: 10 }}>
-      {/* Header */}
-      <Box sx={{ p: 2, bgcolor: '#f5f5f5', mb: 2, borderRadius: 1 }}>
-        <Typography variant="h5" fontWeight="bold">
-          NAVIGATION
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          HERE YOU CAN NAVIGATE THROUGH PAGES
-        </Typography>
-      </Box>
+    <div>
+         <Box
+           sx={{
+             p: 2,
+             bgcolor: "#f5f5f5",
+             mb: 2,
+             borderRadius: 1,
+             padding: "40px",
+           }}
+         >
+           <Typography variant="h4" fontWeight="bold">
+             NAVIGATION
+           </Typography>
+           <Typography variant="body1" color="text.secondary">
+            Here You Can Navigate Through Pages
+           </Typography>
+         </Box>
+
+ <Box sx={{ p: 4, minHeight: "100vh" }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
         <Breadcrumbs aria-label="breadcrumb">
           <Link underline="hover" color="inherit" href="/">Input</Link>
@@ -129,25 +138,8 @@ export default function NavigationLayout() {
 
         <Box>
           <Button onClick={toggleDrawer(true)} sx={{ mr: 2 }}>☰ Menu</Button>
-          <Button
-            id="dashboard-button"
-            aria-controls={openMenu ? 'dashboard-menu' : undefined}
-            aria-haspopup="true"
-            aria-expanded={openMenu ? 'true' : undefined}
-            onClick={handleMenuClick}
-          >
-            Dashboard
-          </Button>
-          <Menu
-            id="dashboard-menu"
-            anchorEl={anchorEl}
-            open={openMenu}
-            onClose={handleMenuClose}
-          >
-            <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-            <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-            <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
-          </Menu>
+        
+          
         </Box>
       </Box>
 
@@ -170,18 +162,7 @@ export default function NavigationLayout() {
         />
       </Stack>
 
-      {/* SpeedDial */}
-      <Box sx={{ position: 'fixed', bottom: 80, right: 16 }}>
-        <SpeedDial ariaLabel="SpeedDial" icon={<SpeedDialIcon />}>
-          {actions.map((action) => (
-            <SpeedDialAction
-              key={action.name}
-              icon={action.icon}
-              tooltipTitle={action.name}
-            />
-          ))}
-        </SpeedDial>
-      </Box>
+      
 
       <Box sx={{ p: 2, bgcolor: '#f5f5f5', mb: 2, borderRadius: 1, marginTop: "100px" }}>
         <Typography variant="h5" fontWeight="bold">
@@ -230,9 +211,9 @@ export default function NavigationLayout() {
       </ImageList>
 
 
+</Box>
 
-
-    </Container>
+    </div>
   );
 }
 
